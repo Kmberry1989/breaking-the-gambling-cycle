@@ -1171,7 +1171,7 @@
       var head = card.querySelector('h2, h3');
       var titleText = head ? head.textContent.replace(/\s+/g,' ').trim() : '';
       var contentEls = [];
-      Array.prototype.forEach.call(card.querySelectorAll('p, li, h3, h4, .thought, .resource .contact'), function(el){
+      Array.prototype.forEach.call(card.querySelectorAll('p, li, h3, h4, .thought, .resource .contact, .number, .section-num, .rating, .myth .label, .action .n, .tool-kicker'), function(el){
         if(el === head) return;
         if(el.closest('[data-no-read]')) return;
         if(el.closest('.listen-row')) return;
