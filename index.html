@@ -369,8 +369,172 @@
       .callout { grid-template-columns: 34px 1fr; padding: 18px; }
     }
 
+    /* ---------- read aloud (same system as the dryer-vent explainer) ---------- */
+    .readerbar {
+      background: #1f2937; color: #fff;
+      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+      z-index: 50;
+    }
+    .readerbar .rb-full {
+      display: flex; flex-wrap: wrap; gap: .6rem; align-items: center;
+      width: min(1120px, calc(100% - 40px)); margin: 0 auto; padding: .75rem 0;
+    }
+    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+    .transport { display: flex; gap: .5rem; flex: 1 1 100%; }
+    .transport button { flex: 1 1 0; }
+    .readerbar button {
+      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+      font-size: 1.02rem; font-weight: 700; cursor: pointer;
+      border: none; border-radius: .75rem; padding: .8rem 1.2rem; min-height: 50px;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .readerbar button:focus-visible { outline: 4px solid #fbbf24; outline-offset: 2px; }
+    .readerbar button:disabled { opacity: .45; cursor: default; }
+    .btn-play { background: var(--green); color: #0d2318; }
+    .btn-pause { background: #4b5563; color: #fff; }
+    .btn-stop { background: #6b7280; color: #fff; }
+    .speed { display: flex; gap: .4rem; align-items: center; }
+    .speed button { background: #374151; color: #fff; font-size: .95rem; padding: .6rem .85rem; min-height: 46px; }
+    .speed button[aria-pressed="true"] { background: var(--green); color: #0d2318; }
+    .rb-mini, .rb-play { display: none; }
+    #readerbar.is-mini {
+      position: fixed; top: auto; bottom: 1.1rem; right: 1.1rem; left: auto;
+      width: auto; padding: .35rem; border-radius: 999px; box-shadow: 0 4px 14px rgba(0,0,0,.25);
+    }
+    #readerbar.is-mini .rb-full, #readerbar.is-mini .rb-play { display: none; }
+    #readerbar.is-mini .rb-mini { display: block; }
+    .rb-mini button {
+      width: 62px; height: 62px; min-height: 0; padding: 0; border-radius: 50%;
+      background: var(--green); color: #0d2318; font-size: 1.6rem; line-height: 1;
+    }
+    #readerbar.is-sheet {
+      position: fixed; top: auto; bottom: 1rem; left: 1rem; right: 1rem; width: auto;
+      border-radius: 1rem; z-index: 60; max-height: 72vh; overflow: auto; box-shadow: 0 4px 14px rgba(0,0,0,.25);
+    }
+    #readerbar.is-sheet .rb-full { display: flex; }
+    #readerbar.is-sheet .rb-mini, #readerbar.is-sheet .rb-play { display: none; }
+    #readerbar:not(.is-sheet) .btn-collapse { display: none; }
+    .btn-collapse { background: #374151; color: #fff; flex: 1 1 100%; }
+    #readerbar.is-playing {
+      position: fixed; top: 0; left: 0; right: 0;
+      padding: .45rem .8rem; box-shadow: 0 4px 14px rgba(0,0,0,.25);
+    }
+    #readerbar.is-playing .rb-full, #readerbar.is-playing .rb-mini { display: none; }
+    #readerbar.is-playing .rb-play {
+      display: flex; align-items: center; gap: .7rem; width: 100%;
+      max-width: min(1120px, calc(100% - 40px)); margin: 0 auto;
+    }
+    .rb-play .btn-pause, .rb-play .btn-stop { min-height: 44px; padding: .5rem .9rem; font-size: 1rem; }
+    .rb-play .btn-expand { background: #374151; color: #fff; min-height: 44px; padding: .5rem .9rem; font-size: 1rem; }
+    .rb-play .pstatus { font-weight: 800; white-space: nowrap; font-size: 1rem; }
+    .rb-play .ptitle {
+      flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+      color: #e5e7eb; font-size: 1rem;
+    }
+    .no-speech {
+      display: none; background: #fef3c7; border: 2px solid #f59e0b; border-radius: .9rem;
+      padding: 1rem 1.25rem; margin: 1.5rem auto; color: #111;
+      width: min(1120px, calc(100% - 40px)); font-size: 1.02rem;
+    }
+    .listen-row { margin-top: 1.5rem; }
+    .btn-listen {
+      background: var(--green-soft); color: var(--ink);
+      border: 2px solid var(--green); border-radius: .75rem;
+      padding: .8rem 1.2rem; font: 700 1rem var(--sans); cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .btn-listen:hover { filter: brightness(1.06); }
+    [data-read].speaking { outline: 3px solid var(--green); outline-offset: 8px; border-radius: 4px; }
+    .w .lt { display: inline-block; }
+    .w.on { background: #fff3d6; border-radius: .3em; box-shadow: 0 0 0 .18em #fff3d6; }
+    .w.on .lt { animation: bloom .55s cubic-bezier(.2,.7,.3,1.3) both; }
+    @keyframes bloom {
+      0% { transform: translateY(.45em) scale(.3); opacity: 0; }
+      55% { transform: translateY(-.07em) scale(1.22); opacity: 1; }
+      100% { transform: none; opacity: 1; }
+    }
+
+    /* ---------- tools ---------- */
+    .tool-stack { display: grid; gap: 22px; }
+    .tool {
+      border: 1px solid var(--line-strong); background: var(--card);
+      padding: clamp(20px, 3.5vw, 30px); box-shadow: var(--shadow);
+    }
+    .tool-kicker {
+      color: var(--green); font-size: .74rem; font-weight: 700;
+      letter-spacing: .09em; text-transform: uppercase; margin-bottom: 8px;
+    }
+    .tool h3 { font-size: clamp(1.35rem, 2.6vw, 1.7rem); margin: 0 0 8px; }
+    .tool-sub { color: var(--muted); margin: 0 0 18px; max-width: 660px; }
+    .cbt-list { margin: 0 0 18px; padding-left: 1.25em; }
+    .cbt-list li { margin: 10px 0; }
+    .cbt-list li strong { color: var(--ink); }
+    .tool-links { display: flex; flex-wrap: wrap; gap: 10px 22px; }
+    .thought { border: 1px solid var(--line); border-radius: .6rem; margin: 12px 0; overflow: hidden; background: var(--paper); }
+    .thought-q {
+      width: 100%; text-align: left; background: transparent; border: 0; cursor: pointer;
+      padding: 16px 18px; font: 650 1.06rem/1.3 var(--serif); color: var(--ink);
+      display: flex; justify-content: space-between; gap: 14px; align-items: center;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .thought-q .t-arrow { flex: 0 0 auto; color: var(--green); font: 700 1.3rem var(--sans); }
+    .thought.open .thought-q .t-arrow { transform: rotate(45deg); }
+    .thought-a { display: none; padding: 0 18px 18px; color: var(--muted); }
+    .thought.open .thought-a { display: block; }
+    .thought-a strong { color: var(--green); }
+    .screen-link {
+      display: block; margin-top: 20px; padding: 18px 20px;
+      background: var(--blue-soft); border: 1px solid color-mix(in srgb, var(--blue) 40%, var(--line));
+      border-radius: .6rem; text-decoration: none; font-weight: 650;
+    }
+    .screen-link small { display: block; margin-top: 6px; font-weight: 400; color: var(--muted); }
+    .urge { text-align: center; padding: 8px 0 4px; }
+    .urge-time { font: 650 clamp(3.4rem, 9vw, 5.2rem)/1 var(--serif); letter-spacing: -.03em; }
+    .urge-msg { color: var(--muted); min-height: 3.2em; max-width: 520px; margin: 10px auto 16px; }
+    .urge-btns { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+    .urge-btns button {
+      border: 0; border-radius: 999px; padding: 13px 30px; min-height: 54px;
+      font: 700 1rem var(--sans); cursor: pointer; -webkit-tap-highlight-color: transparent;
+    }
+    #urgeStart { background: var(--green); color: #0d2318; }
+    #urgeReset { background: transparent; border: 2px solid var(--line-strong); color: var(--ink); }
+    .checklist { display: grid; gap: 10px; }
+    .check {
+      display: flex; gap: 14px; align-items: flex-start;
+      border: 1px solid var(--line); border-radius: .6rem; padding: 15px 16px;
+      cursor: pointer; background: var(--paper);
+    }
+    .check input { width: 26px; height: 26px; flex: 0 0 auto; margin-top: 2px; accent-color: var(--green); cursor: pointer; }
+    .check span { font-size: .96rem; }
+    .check.done span { text-decoration: line-through; color: var(--muted); }
+    .check-progress { margin: 14px 0 0; font-weight: 650; color: var(--green); }
+    .sign-msg { margin: 14px 0 0; font-weight: 600; }
+    .money { display: grid; gap: 12px; max-width: 460px; }
+    .money label { display: grid; gap: 6px; font-weight: 600; font-size: .92rem; }
+    .money input {
+      font: 500 1.05rem var(--sans); color: var(--ink);
+      background: var(--paper); border: 2px solid var(--line-strong); border-radius: .6rem;
+      padding: 12px 14px; width: 100%;
+    }
+    .money input:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+    #mGo {
+      border: 0; border-radius: 999px; padding: 13px 30px; min-height: 54px;
+      background: var(--ink); color: var(--paper); font: 700 1rem var(--sans); cursor: pointer;
+      -webkit-tap-highlight-color: transparent; justify-self: start;
+    }
+    .money-out { font-size: 1.05rem; }
+    .money-out strong { color: var(--red); }
+
+    @media (prefers-color-scheme: dark) {
+      .w.on { background: #4a3f14; box-shadow: 0 0 0 .18em #4a3f14; }
+      .btn-play, .speed button[aria-pressed="true"], .rb-mini button, #urgeStart { color: #0d2318; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .w.on .lt { animation: none; }
+    }
+
     @media print {
-      nav.index, .copy-btn, .resource button, .toast { display: none !important; }
+      nav.index, .copy-btn, .resource button, .toast, .readerbar, .listen-row, .urge-btns, #mGo { display: none !important; }
       body { background: white; color: #111; font-size: 11pt; }
       section { break-inside: avoid; padding: 28px 0; }
       a { color: inherit; }
@@ -383,6 +547,32 @@
   </style>
 </head>
 <body>
+  <div id="readerbar" class="readerbar" role="region" aria-label="Read aloud controls">
+    <div class="rb-full">
+      <div class="sr-only" id="readerStatus" aria-live="polite"></div>
+      <div class="transport" role="group" aria-label="Reading controls">
+        <button class="btn-play" id="btnPlay" type="button">&#9654; Play</button>
+        <button class="btn-pause" id="btnPause" type="button" disabled>&#10074;&#10074; Pause</button>
+        <button class="btn-stop" id="btnStop" type="button" disabled>&#9632; Stop</button>
+      </div>
+      <div class="speed" role="group" aria-label="Reading speed">
+        <button type="button" data-rate="0.85" aria-pressed="false">Slower</button>
+        <button type="button" data-rate="0.95" aria-pressed="true">Normal</button>
+        <button type="button" data-rate="1.18" aria-pressed="false">Faster</button>
+      </div>
+      <button class="btn-collapse" id="btnCollapse" type="button">&#10005; Collapse</button>
+    </div>
+    <div class="rb-mini"><button id="btnMini" type="button" aria-label="Open read-aloud controls">&#128266;</button></div>
+    <div class="rb-play">
+      <button class="btn-pause" id="btnPausePlay" type="button" aria-label="Pause reading">&#10074;&#10074;</button>
+      <button class="btn-stop" id="btnStopPlay" type="button" aria-label="Stop reading">&#9632;</button>
+      <div class="pstatus" id="playStatus"></div>
+      <div class="ptitle" id="playTitle"></div>
+      <button class="btn-expand" id="btnExpand" type="button" aria-label="Show reading controls">&#10530;</button>
+    </div>
+  </div>
+  <div class="no-speech" id="noSpeech">Your browser can&rsquo;t read aloud, so the &ldquo;listen&rdquo; buttons are hidden. Everything is still here to read.</div>
+
   <div class="crisis" role="note" aria-label="Crisis support">
     <div class="wrap">
       <p><strong>If gambling has you thinking about suicide:</strong> call or text <strong>988</strong> now. Do not wait for a gambling-specific service.</p>
@@ -409,12 +599,13 @@
       <a href="#bundle">The bundle</a>
       <a href="#truths">Hard truths</a>
       <a href="#start">First 24 hours</a>
+      <a href="#tools">Tools</a>
       <a href="#sources">Sources</a>
     </div>
   </nav>
 
   <main>
-    <section id="numbers">
+    <section id="numbers" data-read data-part="1">
       <div class="wrap">
         <div class="section-head">
           <div class="section-num">01 / Reality check</div>
@@ -450,7 +641,7 @@
       </div>
     </section>
 
-    <section id="methods">
+    <section id="methods" data-read data-part="2">
       <div class="wrap">
         <div class="section-head">
           <div class="section-num">02 / Evidence</div>
@@ -543,7 +734,7 @@
       </div>
     </section>
 
-    <section id="bundle">
+    <section id="bundle" data-read data-part="3">
       <div class="wrap">
         <div class="section-head">
           <div class="section-num">03 / The pattern</div>
@@ -580,7 +771,7 @@
       </div>
     </section>
 
-    <section id="truths">
+    <section id="truths" data-read data-part="4">
       <div class="wrap">
         <div class="section-head">
           <div class="section-num">04 / Uncomfortable truths</div>
@@ -624,7 +815,7 @@
       </div>
     </section>
 
-    <section id="start">
+    <section id="start" data-read data-part="5">
       <div class="wrap">
         <div class="section-head">
           <div class="section-num">05 / Start today</div>
@@ -671,10 +862,120 @@
       </div>
     </section>
 
-    <section id="sources">
+    <section id="tools">
       <div class="wrap">
         <div class="section-head">
-          <div class="section-num">06 / Sources & limits</div>
+          <div class="section-num">06 / Tools</div>
+          <div>
+            <h2>Tools you can use right now.</h2>
+            <p class="section-intro">The sections above are the outline. These are the application — small, concrete things to do with the information. Everything here runs on this page; nothing you type leaves your device.</p>
+          </div>
+        </div>
+
+        <div class="tool-stack">
+
+          <article class="tool" data-read data-part="6a" id="tool-cbt">
+            <div class="tool-kicker">Tool · Understand the treatment</div>
+            <h3>What CBT for gambling actually does</h3>
+            <p class="tool-sub">Cognitive Behavioral Therapy for gambling disorder is a short-term, goal-focused psychotherapy that targets the irrational thoughts and behaviors maintaining a compulsive gambling habit. Four components do the work:</p>
+            <ul class="cbt-list">
+              <li><strong>Cognitive restructuring.</strong> Identifies and corrects &ldquo;cognitive distortions&rdquo; &mdash; such as the illusion of control, or the belief that you are &ldquo;due for a win&rdquo; after a losing streak.</li>
+              <li><strong>Behavioral interventions.</strong> Tracks triggers, limits access to money or venues, and replaces gambling with non-gambling activities.</li>
+              <li><strong>Relapse prevention.</strong> Teaches coping mechanisms to handle stress, cravings, and high-risk situations without returning to gambling.</li>
+              <li><strong>Structured homework.</strong> Semi-structured assignments between sessions (often 8 to 15 total sessions) reinforce the skills learned in therapy.</li>
+            </ul>
+            <div class="tool-links">
+              <a href="https://www.cdph.ca.gov/Programs/OPG/CDPH%20Document%20Library/CBT-Patient-Workbook.pdf" target="_blank" rel="noreferrer">CDPH CBT Patient Workbook (PDF)</a>
+              <a href="https://kmb.camh.ca/ggtu/knowledge-translation/cognitive-behavioural-therapy" target="_blank" rel="noreferrer">CAMH GGTU CBT Guide</a>
+            </div>
+          </article>
+
+          <article class="tool" data-read data-part="6b" id="tool-thoughts">
+            <div class="tool-kicker">Tool · Practice the skill</div>
+            <h3>Catch the thought</h3>
+            <p class="tool-sub">Cognitive restructuring in miniature. Tap a thought gambling puts in your head, and read the challenge a CBT therapist would offer back.</p>
+            <div data-no-read>
+              <div class="thought">
+                <button type="button" class="thought-q" aria-expanded="false"><span>&ldquo;I&rsquo;m due for a win after this losing streak.&rdquo;</span><span class="t-arrow" aria-hidden="true">+</span></button>
+                <div class="thought-a"><strong>Challenge: the gambler&rsquo;s fallacy.</strong> Every spin, hand, or draw is independent &mdash; the game has no memory of your losses. Being &ldquo;due&rdquo; is a feeling, not a fact, and it is the thought most directly tied to chasing.</div>
+              </div>
+              <div class="thought">
+                <button type="button" class="thought-q" aria-expanded="false"><span>&ldquo;I can feel when it&rsquo;s about to pay out.&rdquo;</span><span class="t-arrow" aria-hidden="true">+</span></button>
+                <div class="thought-a"><strong>Challenge: the illusion of control.</strong> The outcome is decided by a random number generator the instant you act. Hunches, rituals, and &ldquo;hot&rdquo; machines don&rsquo;t change the odds &mdash; they only change how confident you feel while losing.</div>
+              </div>
+              <div class="thought">
+                <button type="button" class="thought-q" aria-expanded="false"><span>&ldquo;I was one symbol away &mdash; so close.&rdquo;</span><span class="t-arrow" aria-hidden="true">+</span></button>
+                <div class="thought-a"><strong>Challenge: the near-miss.</strong> Near misses are engineered to feel like progress; they pay $0. Your brain files &ldquo;almost&rdquo; as &ldquo;soon,&rdquo; which is exactly the reaction the design is built to produce.</div>
+              </div>
+              <div class="thought">
+                <button type="button" class="thought-q" aria-expanded="false"><span>&ldquo;I just need to win back what I lost.&rdquo;</span><span class="t-arrow" aria-hidden="true">+</span></button>
+                <div class="thought-a"><strong>Challenge: chasing.</strong> The math doesn&rsquo;t know what you&rsquo;ve lost and doesn&rsquo;t care. Chasing turns a loss into a bigger loss on a schedule you don&rsquo;t control. The way out of a hole is to stop digging, not to dig faster.</div>
+              </div>
+              <div class="thought">
+                <button type="button" class="thought-q" aria-expanded="false"><span>&ldquo;I have a system that works.&rdquo;</span><span class="t-arrow" aria-hidden="true">+</span></button>
+                <div class="thought-a"><strong>Challenge: selective memory.</strong> Systems can&rsquo;t beat a negative-expectation game &mdash; the house edge applies to every single bet. What feels like a working system is usually the wins being remembered and the losses being edited out. Run the money check below on your actual numbers.</div>
+              </div>
+            </div>
+            <a class="screen-link" href="https://kmberry1989.github.io/behind-the-screen/">Behind the Screen: see how the machine is built<span><small>Our interactive explainer shows how social-casino bingo and slot games are engineered to produce exactly these thoughts &mdash; near misses, losses disguised as wins, and free-credit hooks.</small></span></a>
+          </article>
+
+          <article class="tool" data-read data-part="6c" id="tool-urge">
+            <div class="tool-kicker">Tool · Survive the next 15 minutes</div>
+            <h3>Ride the wave</h3>
+            <p class="tool-sub">Cravings usually peak and fade within about fifteen minutes. Start the timer when the urge hits and stay with it &mdash; the urge is a wave, not a command.</p>
+            <div class="urge" data-no-read>
+              <div class="urge-time" id="urgeTime">15:00</div>
+              <p class="urge-msg" id="urgeMsg" aria-live="polite">Press start when the urge hits.</p>
+              <div class="urge-btns">
+                <button type="button" id="urgeStart">Start</button>
+                <button type="button" id="urgeReset">Reset</button>
+              </div>
+            </div>
+          </article>
+
+          <article class="tool" id="tool-checklist">
+            <div class="tool-kicker">Tool · The first 24 hours, checked off</div>
+            <h3>Do the five things</h3>
+            <p class="tool-sub">The same five steps from the section above, as a checklist that remembers where you left off on this device.</p>
+            <div class="checklist" data-no-read>
+              <label class="check"><input type="checkbox" data-step="0"><span><strong>Tell one trusted person</strong> the full financial picture &mdash; not the edited version.</span></label>
+              <label class="check"><input type="checkbox" data-step="1"><span><strong>Self-exclude</strong> anywhere you can bet &mdash; start with your state gaming commission.</span></label>
+              <label class="check"><input type="checkbox" data-step="2"><span><strong>Block every device</strong> (phone first) and ask your bank for a gambling transaction block.</span></label>
+              <label class="check"><input type="checkbox" data-step="3"><span><strong>Make contact</strong> &mdash; call <a href="tel:18005224700">1-800-522-4700</a>, text <strong>800GAM</strong>, or find a free GA meeting.</span></label>
+              <label class="check"><input type="checkbox" data-step="4"><span><strong>Book money help separately</strong> &mdash; a nonprofit debt counselor can build a plan.</span></label>
+            </div>
+            <p class="check-progress" id="checkProgress" aria-live="polite"></p>
+          </article>
+
+          <article class="tool" id="tool-signs">
+            <div class="tool-kicker">Tool · Honest self-check</div>
+            <h3>Warning signs</h3>
+            <p class="tool-sub">Check any that sound familiar. Nothing leaves this page.</p>
+            <div class="checklist" id="signList" data-no-read></div>
+            <p class="sign-msg" id="signMsg" aria-live="polite">Take your time &mdash; be honest with yourself.</p>
+          </article>
+
+          <article class="tool" id="tool-money">
+            <div class="tool-kicker">Tool · See the real number</div>
+            <h3>The money check</h3>
+            <p class="tool-sub">No judgment &mdash; just arithmetic. Memory keeps the highlight reel; the ledger keeps the truth.</p>
+            <div class="money" data-no-read>
+              <label>Typical spend per session ($)<input id="mSession" type="number" min="0" inputmode="decimal" autocomplete="off"></label>
+              <label>Sessions per week<input id="mFreq" type="number" min="0" inputmode="decimal" autocomplete="off"></label>
+              <label>Your hourly wage, optional ($)<input id="mWage" type="number" min="0" inputmode="decimal" autocomplete="off"></label>
+              <button type="button" id="mGo">Show me</button>
+              <p class="money-out" id="mOut" aria-live="polite"></p>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <section id="sources" data-read data-part="7">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="section-num">07 / Sources & limits</div>
           <div>
             <h2>Read the evidence with the caveats attached.</h2>
             <p class="section-intro">The review was conducted October 8, 2026 from indexed web results. No primary paper was read end-to-end in a live browser session. Links below are the research sources used for the main claims.</p>
@@ -776,6 +1077,504 @@
         });
       });
     }());
+  </script>
+
+  <script>
+  /* Read aloud — same system as the dryer-vent explainer:
+     per-section listen buttons, transport controls, speed control,
+     and word-by-word follow-along highlighting. */
+  (function(){
+    "use strict";
+    var synth = window.speechSynthesis || null;
+    var bar = document.getElementById('readerbar');
+    var statusEl = document.getElementById('readerStatus');
+    var btnPlay = document.getElementById('btnPlay');
+    var btnPause = document.getElementById('btnPause');
+    var btnStop = document.getElementById('btnStop');
+    var btnStopPlay = document.getElementById('btnStopPlay');
+    var btnPausePlay = document.getElementById('btnPausePlay');
+    var btnMini = document.getElementById('btnMini');
+    var btnCollapse = document.getElementById('btnCollapse');
+    var btnExpand = document.getElementById('btnExpand');
+    var playStatus = document.getElementById('playStatus');
+    var playTitle = document.getElementById('playTitle');
+    var paused = false;
+    var reading = false;
+    var rate = 0.95;
+    var speakToken = 0;
+    var resumeFn = null;
+    var cards = Array.prototype.slice.call(document.querySelectorAll('[data-read]'));
+
+    function say(text){ statusEl.textContent = text; }
+
+    function updateTransport(){
+      var active = reading && !paused;
+      btnPlay.disabled = active;
+      btnPause.disabled = !active;
+      btnStop.disabled = !(reading || paused);
+      btnPausePlay.disabled = !active;
+    }
+
+    function pauseReading(){
+      if(reading && !paused && synth){
+        try{ synth.pause(); }catch(e){}
+        paused = true;
+        playStatus.textContent = 'Paused \u2014 ' + playStatus.textContent;
+        say('Paused. Press play to continue.');
+        updateTransport();
+      }
+    }
+
+    /* ---------- reader bar states: full / mini / playing ---------- */
+    var barState = 'full';
+    function setBar(s){
+      barState = s;
+      bar.classList.remove('is-mini','is-playing','is-sheet');
+      if(s === 'mini') bar.classList.add('is-mini');
+      if(s === 'playing') bar.classList.add('is-playing');
+      if(s === 'sheet') bar.classList.add('is-sheet');
+    }
+    function restBar(){
+      if(reading) return;
+      setBar(window.scrollY > 260 ? 'mini' : 'full');
+    }
+    window.addEventListener('scroll', restBar, {passive:true});
+    btnMini.addEventListener('click', function(){ setBar('sheet'); });
+    btnCollapse.addEventListener('click', function(){ restBar(); });
+    btnExpand.addEventListener('click', function(){ setBar('sheet'); });
+
+    /* ---------- friendly voice ---------- */
+    var FRIENDLY_VOICES = ['ava','zoe','samantha','google us english','allison',
+      'susan','karen','moira','tessa','fiona','shelley','serena'];
+    function pickVoice(){
+      if(!synth) return null;
+      var voices = synth.getVoices();
+      if(!voices.length) return null;
+      function en(v){ return (v.lang || '').toLowerCase().indexOf('en') === 0; }
+      function id(v){ return ((v.name || '') + ' ' + (v.voiceURI || '')).toLowerCase(); }
+      var i, j;
+      for(i = 0; i < FRIENDLY_VOICES.length; i++){
+        for(j = 0; j < voices.length; j++){
+          if(en(voices[j]) && id(voices[j]).indexOf(FRIENDLY_VOICES[i]) !== -1) return voices[j];
+        }
+      }
+      var us = voices.filter(function(v){ return (v.lang || '').toLowerCase().indexOf('en-us') === 0; });
+      if(us.length) return us[0];
+      var anyEn = voices.filter(en);
+      return anyEn[0] || voices[0] || null;
+    }
+
+    /* ---------- word wrapping for follow-along ---------- */
+    function prepareCard(card){
+      if(card._prep) return card._prep;
+      var num = card.getAttribute('data-part') || '';
+      var head = card.querySelector('h2, h3');
+      var titleText = head ? head.textContent.replace(/\s+/g,' ').trim() : '';
+      var contentEls = [];
+      Array.prototype.forEach.call(card.querySelectorAll('p, li, h3, h4, .thought, .resource .contact'), function(el){
+        if(el === head) return;
+        if(el.closest('[data-no-read]')) return;
+        if(el.closest('.listen-row')) return;
+        if(el.classList.contains('thought')){
+          var q = el.querySelector('.thought-q span:first-child');
+          var a = el.querySelector('.thought-a');
+          if(q) contentEls.push({node:q, skip:'.t-arrow'});
+          if(a) contentEls.push({node:a});
+        } else {
+          if(el.closest('button')) return;
+          contentEls.push({node:el});
+        }
+      });
+      var parts = [], starts = [], spans = [], pos = 0;
+      function ew(w, span){ starts.push(pos); parts.push(w); pos += w.length; spans.push(span || null); }
+      function es(){ parts.push(' '); pos += 1; }
+      if(num){ ew('Part'); es(); ew(num + '.'); es(); }
+      function wrapTokens(entry){
+        var el = entry.node, skipSel = entry.skip;
+        var tokens = el.textContent.replace(/\s+/g,' ').trim().split(' ');
+        if(!el || !tokens.length || !tokens[0]) return;
+        var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, { acceptNode:function(n){
+          var p = n.parentElement;
+          if(!p) return NodeFilter.FILTER_REJECT;
+          if(skipSel && p.closest(skipSel)) return NodeFilter.FILTER_REJECT;
+          return NodeFilter.FILTER_ACCEPT;
+        }});
+        var nodes = [];
+        while(walker.nextNode()) nodes.push(walker.currentNode);
+        var ti = 0;
+        nodes.forEach(function(node){
+          var rest = node.nodeValue.replace(/\s+/g,' ');
+          var parent = node.parentNode;
+          var frag = document.createDocumentFragment();
+          var changed = false;
+          while(ti < tokens.length && rest){
+            if(rest.charAt(0) === ' '){ frag.appendChild(document.createTextNode(' ')); rest = rest.slice(1); changed = true; continue; }
+            var tok = tokens[ti];
+            if(rest.indexOf(tok) === 0){
+              var s = document.createElement('span');
+              s.className = 'w';
+              var li = 0;
+              Array.prototype.forEach.call(tok, function(ch){
+                var l = document.createElement('span');
+                l.className = 'lt';
+                l.style.animationDelay = (li * 28) + 'ms';
+                li++;
+                l.textContent = ch;
+                s.appendChild(l);
+              });
+              s.dataset.wi = spans.length;
+              frag.appendChild(s);
+              ew(tok, s); es();
+              rest = rest.slice(tok.length);
+              ti++; changed = true;
+            } else { break; }
+          }
+          if(rest) frag.appendChild(document.createTextNode(rest));
+          if(changed) parent.replaceChild(frag, node);
+        });
+        while(ti < tokens.length){ ew(tokens[ti], null); es(); ti++; }
+      }
+      var tt = titleText ? titleText.split(' ') : [];
+      if(tt.length && head){
+        if(tt[tt.length - 1].slice(-1) !== '.') tt[tt.length - 1] += '.';
+        wrapTokens({node:head});
+      }
+      contentEls.forEach(wrapTokens);
+      var prep = { num:num, spoken:parts.join(''), starts:starts, spans:spans,
+                   card:card, activeWi:null, fallbackTimer:null, utter:null };
+      try{ Object.defineProperty(card, '_prep', {value:prep}); }catch(e){ card._prep = prep; }
+      return prep;
+    }
+
+    function titleOf(card){
+      var head = card.querySelector('h2, h3');
+      return head ? head.textContent.replace(/\s+/g,' ').trim() : '';
+    }
+
+    function findWord(prep, charIndex){
+      var s = prep.starts, lo = 0, hi = s.length - 1, ans = -1;
+      while(lo <= hi){
+        var mid = (lo + hi) >> 1;
+        if(s[mid] <= charIndex){ ans = mid; lo = mid + 1; } else { hi = mid - 1; }
+      }
+      return ans;
+    }
+
+    function setActive(prep, wi){
+      if(prep.activeWi === wi) return;
+      if(prep.activeWi != null && prep.spans[prep.activeWi]) prep.spans[prep.activeWi].classList.remove('on');
+      prep.activeWi = wi;
+      var sp = (wi != null) ? prep.spans[wi] : null;
+      if(sp){
+        sp.classList.add('on');
+        var r = sp.getBoundingClientRect();
+        if(r.top < 80 || r.bottom > window.innerHeight - 60){
+          try{ sp.scrollIntoView({block:'center', behavior:'smooth'}); }catch(e){}
+        }
+      }
+    }
+
+    function clearUtter(prep){
+      if(!prep) return;
+      if(prep.fallbackTimer){ clearTimeout(prep.fallbackTimer); clearInterval(prep.fallbackTimer); prep.fallbackTimer = null; }
+      if(prep.activeWi != null && prep.spans[prep.activeWi]) prep.spans[prep.activeWi].classList.remove('on');
+      prep.activeWi = null;
+    }
+
+    function stopSpeech(){
+      reading = false;
+      speakToken++;
+      if(synth){ try{ synth.cancel(); }catch(e){} }
+      cards.forEach(function(c){
+        c.classList.remove('speaking');
+        if(c._prep) clearUtter(c._prep);
+      });
+      Array.prototype.forEach.call(document.querySelectorAll('.w.on'), function(w){ w.classList.remove('on'); });
+    }
+
+    function stopReading(msg){
+      stopSpeech();
+      paused = false;
+      restBar();
+      updateTransport();
+      say(msg || 'Stopped. Press play to start again.');
+    }
+
+    function startUtterance(prep, index, onend){
+      stopSpeech();
+      reading = true;
+      paused = false;
+      updateTransport();
+      var u = new SpeechSynthesisUtterance(prep.spoken);
+      u.rate = rate;
+      var v = pickVoice();
+      if(v) u.voice = v;
+      prep.utter = u;
+      u.onstart = function(){
+        cards.forEach(function(c){ c.classList.remove('speaking'); });
+        prep.card.classList.add('speaking');
+        if(barState !== 'sheet') setBar('playing');
+        playStatus.textContent = prep.num ? ('Part ' + prep.num + ' of ' + cards.length) : ('Part ' + (index + 1) + ' of ' + cards.length);
+        playTitle.textContent = titleOf(prep.card);
+        try{ prep.card.scrollIntoView({block:'start', behavior:'smooth'}); }catch(e){}
+        prep.wi = prep.num ? 3 : 0;
+        prep.lastBoundary = 0;
+        var stepMs = 60000 / (165 * rate);
+        prep.fallbackTimer = setInterval(function(){
+          if(!reading || paused) return;
+          if(prep.lastBoundary && (Date.now() - prep.lastBoundary) < 2500) return;
+          if(prep.wi < prep.spans.length){ setActive(prep, prep.wi); prep.wi++; }
+        }, stepMs);
+      };
+      u.onboundary = function(e){
+        if(e.charIndex == null) return;
+        prep.lastBoundary = Date.now();
+        var wi = findWord(prep, e.charIndex);
+        if(wi >= 0){ prep.wi = wi + 1; setActive(prep, wi); }
+        else setActive(prep, null);
+      };
+      u.onend = function(){
+        clearUtter(prep);
+        if(reading) onend();
+      };
+      u.onerror = function(){
+        var wasReading = reading;
+        clearUtter(prep);
+        if(wasReading) stopReading('The reader hit a problem and stopped. You can press play to try again.');
+      };
+      var myToken = ++speakToken;
+      setTimeout(function(){
+        if(myToken !== speakToken || !reading) return;
+        try{ synth.speak(u); }catch(err){ stopReading('The reader could not start in this browser.'); }
+      }, 80);
+    }
+
+    function readAllFrom(i){
+      if(i >= cards.length){ stopReading('Finished reading the whole page.'); return; }
+      resumeFn = function(){ readAllFrom(i); };
+      startUtterance(prepareCard(cards[i]), i, function(){ if(reading) readAllFrom(i + 1); });
+    }
+
+    function readAll(){
+      if(!synth) return;
+      setBar('playing');
+      readAllFrom(0);
+    }
+
+    function readSingle(card){
+      if(!synth) return;
+      setBar('playing');
+      resumeFn = function(){ readSingle(card); };
+      startUtterance(prepareCard(card), cards.indexOf(card), function(){
+        stopReading('Finished that part.');
+      });
+    }
+
+    /* per-part listen buttons */
+    cards.forEach(function(card){
+      var row = document.createElement('div');
+      row.className = 'listen-row';
+      row.innerHTML = '<button class="btn-listen" type="button">&#128266; Listen to this part</button>';
+      var host = card.querySelector(':scope > .wrap') || card;
+      host.appendChild(row);
+      row.querySelector('.btn-listen').addEventListener('click', function(){ readSingle(card); });
+    });
+
+    if(!synth){
+      document.getElementById('noSpeech').style.display = 'block';
+      bar.style.display = 'none';
+      Array.prototype.forEach.call(document.querySelectorAll('.btn-listen'), function(el){ el.style.display = 'none'; });
+      say('Read-aloud is not available in this browser.');
+    } else {
+      if(synth.getVoices().length === 0 && typeof synth.onvoiceschanged !== 'undefined'){
+        synth.onvoiceschanged = function(){ pickVoice(); };
+      }
+      btnPlay.addEventListener('click', function(){
+        if(paused && synth){
+          try{ synth.resume(); }catch(e){}
+          paused = false;
+          playStatus.textContent = playStatus.textContent.replace(/^Paused \u2014 /, '');
+          say('Resumed.');
+          updateTransport();
+          setTimeout(function(){
+            if(synth.paused && reading && resumeFn){
+              resumeFn();
+            }
+          }, 700);
+        } else {
+          readAll();
+        }
+      });
+      btnPause.addEventListener('click', pauseReading);
+      btnPausePlay.addEventListener('click', pauseReading);
+      btnStop.addEventListener('click', function(){ stopReading(); });
+      btnStopPlay.addEventListener('click', function(){ stopReading(); });
+      updateTransport();
+      var speedBtns = Array.prototype.slice.call(document.querySelectorAll('.speed button'));
+      speedBtns.forEach(function(b){
+        b.addEventListener('click', function(){
+          rate = parseFloat(b.getAttribute('data-rate')) || 0.95;
+          speedBtns.forEach(function(x){ x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+          say('Reading speed set to ' + b.textContent.trim() + '.');
+        });
+      });
+      restBar();
+    }
+  }());
+  </script>
+
+  <script>
+  /* Interactive tools: thought challenger, urge timer, checklist, signs check, money check */
+  (function(){
+    "use strict";
+
+    /* ---------- thought challenger ---------- */
+    Array.prototype.forEach.call(document.querySelectorAll('.thought-q'), function(btn){
+      btn.addEventListener('click', function(){
+        var t = btn.closest('.thought');
+        var open = t.classList.toggle('open');
+        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+    });
+
+    /* ---------- urge timer ---------- */
+    var TOTAL = 15 * 60, left = TOTAL, timer = null, running = false;
+    var timeEl = document.getElementById('urgeTime');
+    var msgEl = document.getElementById('urgeMsg');
+    var startBtn = document.getElementById('urgeStart');
+    var resetBtn = document.getElementById('urgeReset');
+    function fmt(s){
+      var m = Math.floor(s / 60), r = s % 60;
+      return (m < 10 ? '0' : '') + m + ':' + (r < 10 ? '0' : '') + r;
+    }
+    var marks = [
+      {at: 10 * 60, said: false, msg: "Ten minutes in. Notice: the urge is already changing shape. That is what waves do."},
+      {at: 5 * 60, said: false, msg: "Five minutes left. The peak is usually behind you by now."},
+      {at: 60, said: false, msg: "One minute. Almost there."}
+    ];
+    function stopTimer(){ if(timer){ clearInterval(timer); timer = null; } }
+    function resetUrge(){
+      stopTimer();
+      running = false;
+      left = TOTAL;
+      timeEl.textContent = fmt(left);
+      startBtn.textContent = 'Start';
+      msgEl.textContent = 'Press start when the urge hits.';
+      marks.forEach(function(mk){ mk.said = false; });
+    }
+    function finishUrge(){
+      stopTimer();
+      running = false;
+      left = 0;
+      timeEl.textContent = '00:00';
+      startBtn.textContent = 'Start';
+      msgEl.textContent = 'Done \u2014 the wave passed and you stayed. That is the skill. If another comes, you know what to do.';
+    }
+    function tick(){
+      if(left <= 0){ finishUrge(); return; }
+      left--;
+      timeEl.textContent = fmt(left);
+      marks.forEach(function(mk){
+        if(!mk.said && left <= mk.at){ mk.said = true; msgEl.textContent = mk.msg; }
+      });
+      if(left <= 0) finishUrge();
+    }
+    startBtn.addEventListener('click', function(){
+      if(running){
+        stopTimer();
+        running = false;
+        startBtn.textContent = 'Resume';
+        msgEl.textContent = 'Paused. The wave is still there \u2014 resume when you are ready.';
+      } else {
+        if(left <= 0) resetUrge();
+        running = true;
+        startBtn.textContent = 'Pause';
+        msgEl.textContent = 'The urge is a wave. Breathe with it \u2014 you do not have to obey it.';
+        timer = setInterval(tick, 1000);
+      }
+    });
+    resetBtn.addEventListener('click', resetUrge);
+
+    /* ---------- first-24-hours checklist (remembered on this device) ---------- */
+    var KEY = 'bgc-todo-v1';
+    var boxes = Array.prototype.slice.call(document.querySelectorAll('#tool-checklist input[type="checkbox"]'));
+    var prog = document.getElementById('checkProgress');
+    function paintChecklist(){
+      var done = 0;
+      boxes.forEach(function(b){
+        var lab = b.closest('.check');
+        if(b.checked){ done++; lab.classList.add('done'); }
+        else { lab.classList.remove('done'); }
+      });
+      prog.textContent = done === 0
+        ? 'None checked yet \u2014 start with the first one.'
+        : done + ' of ' + boxes.length + ' done.' + (done === boxes.length ? ' All five layers are in place.' : '');
+    }
+    function saveChecklist(){
+      try {
+        var idx = [];
+        boxes.forEach(function(b, i){ if(b.checked) idx.push(i); });
+        localStorage.setItem(KEY, JSON.stringify(idx));
+      } catch(e){}
+    }
+    try {
+      var saved = JSON.parse(localStorage.getItem(KEY) || '[]');
+      boxes.forEach(function(b, i){ b.checked = saved.indexOf(i) !== -1; });
+    } catch(e){}
+    boxes.forEach(function(b){
+      b.addEventListener('change', function(){ saveChecklist(); paintChecklist(); });
+    });
+    paintChecklist();
+
+    /* ---------- warning signs self-check ---------- */
+    var SIGNS = [
+      "Thinking about gambling constantly, or planning the next session",
+      "Needing bigger bets or more play for the same excitement",
+      "Feeling restless or irritable when trying to cut down",
+      "Chasing losses \u2014 playing to win back what you lost",
+      "Lying to family or friends about how much you play or spend",
+      "Borrowing money or selling things to keep playing",
+      "Gambling has hurt a relationship, job, or schoolwork"
+    ];
+    var signList = document.getElementById('signList');
+    var signMsg = document.getElementById('signMsg');
+    signList.innerHTML = SIGNS.map(function(s, i){
+      return '<label class="check"><input type="checkbox" data-s="' + i + '"><span>' + s + '</span></label>';
+    }).join('');
+    signList.addEventListener('change', function(){
+      var c = signList.querySelectorAll('input:checked').length;
+      Array.prototype.forEach.call(signList.querySelectorAll('.check'), function(lab){
+        lab.classList.toggle('done', lab.querySelector('input').checked);
+      });
+      signMsg.innerHTML = c === 0
+        ? 'Take your time \u2014 be honest with yourself.'
+        : c <= 2
+        ? 'Even one or two is worth paying attention to \u2014 these are the NCPG\u2019s published warning signs.'
+        : 'That\u2019s a real signal, not a character flaw \u2014 and free, confidential help exists: <strong>1-800-522-4700</strong> (call) or text <strong>800GAM</strong>, 24/7.';
+    });
+
+    /* ---------- money check ---------- */
+    var mS = document.getElementById('mSession');
+    var mF = document.getElementById('mFreq');
+    var mW = document.getElementById('mWage');
+    var mOut = document.getElementById('mOut');
+    document.getElementById('mGo').addEventListener('click', function(){
+      var s = parseFloat(mS.value), f = parseFloat(mF.value), w = parseFloat(mW.value);
+      if(!(s > 0) || !(f > 0)){
+        mOut.textContent = 'Enter a session amount and sessions per week to see the totals.';
+        return;
+      }
+      var wk = s * f, mo = wk * 52 / 12, yr = wk * 52;
+      function money(n){ return '$' + Math.round(n).toLocaleString('en-US'); }
+      var html = 'That\u2019s about <strong>' + money(wk) + ' a week</strong> \u2014 ' +
+                 money(mo) + ' a month, ' + money(yr) + ' a year.';
+      if(w > 0){
+        html += ' At $' + w + '/hour, that\u2019s about <strong>' +
+                Math.round(yr / w).toLocaleString('en-US') + ' hours of work</strong> a year.';
+      }
+      mOut.innerHTML = html;
+    });
+  }());
   </script>
 </body>
 </html>
