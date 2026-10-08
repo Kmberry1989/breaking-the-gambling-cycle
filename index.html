@@ -525,6 +525,16 @@
     .money-out { font-size: 1.05rem; }
     .money-out strong { color: var(--red); }
 
+    /* ---------- local resources ---------- */
+    .local-block { margin-top: 46px; padding-top: 32px; border-top: 2px solid var(--ink); }
+    .local-block h3 { font-size: clamp(1.4rem, 2.8vw, 1.8rem); margin: 0 0 8px; }
+    .local-group {
+      margin: 32px 0 14px; font-size: .8rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .07em; color: var(--muted);
+    }
+    .local-note { margin-top: 24px; color: var(--muted); font-size: .88rem; max-width: 720px; }
+    .local-note strong { color: var(--ink); }
+
     @media (prefers-color-scheme: dark) {
       .w.on { background: #4a3f14; box-shadow: 0 0 0 .18em #4a3f14; }
       .btn-play, .speed button[aria-pressed="true"], .rb-mini button, #urgeStart { color: #0d2318; }
@@ -858,6 +868,71 @@
             <p>US Suicide & Crisis Lifeline. Call or text now if gambling has led to suicidal thoughts or immediate danger.</p>
             <button type="button" data-copy="988">Copy number</button>
           </article>
+        </div>
+
+        <div class="local-block">
+          <h3>Kokomo, Indiana — local options</h3>
+          <p class="section-intro">Statewide and national numbers work anywhere, but sometimes you want a door you can walk through. Real listings found in October 2026 — call ahead, because schedules and programs change.</p>
+
+          <h4 class="local-group">Gambling-specific</h4>
+          <div class="resource-panel" aria-label="Indiana gambling resources">
+            <article class="resource">
+              <span class="type">Indiana · 24/7</span>
+              <span class="contact">1-800-9-WITH-IT</span>
+              <p>Indiana's confidential problem-gambling helpline — information, resources, and referrals. Text <strong>INGAMB</strong> to <strong>53342</strong>. <a href="https://ipgap.indiana.edu/getting-help/index.html" target="_blank" rel="noreferrer">ipgap.indiana.edu</a></p>
+              <button type="button" data-copy="1-800-994-8448">Copy number</button>
+            </article>
+            <article class="resource">
+              <span class="type">State self-exclusion</span>
+              <span class="contact">IGC Exclusion</span>
+              <p>Indiana Gaming Commission Voluntary Exclusion Program: ban yourself from all Indiana casinos for 1 year, 5 years, or lifetime. Enroll online, at any casino, or at the IGC office in Indianapolis (call 317-234-3600 first). <a href="https://www.in.gov/igc/voluntary-exclusion-program/" target="_blank" rel="noreferrer">in.gov/igc</a></p>
+            </article>
+            <article class="resource">
+              <span class="type">Peer support · nearest in-person</span>
+              <span class="contact">Anderson GA</span>
+              <p>No Gamblers Anonymous meeting was found in Kokomo itself. Nearest: <strong>Saturdays 11:00 AM</strong>, Bethel United Methodist, 4011 W 200 South, Anderson (about 30 miles). GA hotline <strong>855-222-5542</strong>; virtual meetings open to all at <a href="https://gamblersanonymous.org/virtual-meetings/" target="_blank" rel="noreferrer">gamblersanonymous.org</a></p>
+              <button type="button" data-copy="855-222-5542">Copy number</button>
+            </article>
+          </div>
+
+          <h4 class="local-group">Therapy & behavioral health</h4>
+          <div class="resource-panel" aria-label="Kokomo therapy resources">
+            <article class="resource">
+              <span class="type">Kokomo · 322 N Main</span>
+              <span class="contact">765-776-8555</span>
+              <p>Community Fairbanks Behavioral Health Howard — outpatient behavioral health and the main local addiction-treatment provider. Treatment directories list gambling-disorder care here, but the clinic's own site doesn't name it, so <strong>ask for gambling treatment specifically when you call</strong>. Toll-free 888-204-6242.</p>
+              <button type="button" data-copy="765-776-8555">Copy number</button>
+            </article>
+            <article class="resource">
+              <span class="type">Indiana nonprofit</span>
+              <span class="contact">(866) 699-4274</span>
+              <p>Indiana Council on Problem Gambling — nonprofit advocacy and education for problem gamblers and families; 3935 N Meridian St, Suite B-1, Indianapolis. <a href="https://indianaproblemgambling.org/" target="_blank" rel="noreferrer">indianaproblemgambling.org</a></p>
+              <button type="button" data-copy="866-699-4274">Copy number</button>
+            </article>
+          </div>
+
+          <h4 class="local-group">Money help — nonprofit only</h4>
+          <div class="resource-panel" aria-label="Kokomo financial counseling resources">
+            <article class="resource">
+              <span class="type">Kokomo · 618 S Main</span>
+              <span class="contact">(765) 457-9313</span>
+              <p>Family Service Association of Howard County — local nonprofit (since 1968); consumer credit counseling is listed among its programs. <strong>Call to confirm the program is currently running.</strong> <a href="https://fsahc.org/" target="_blank" rel="noreferrer">fsahc.org</a></p>
+              <button type="button" data-copy="765-457-9313">Copy number</button>
+            </article>
+            <article class="resource">
+              <span class="type">Nonprofit · statewide by phone</span>
+              <span class="contact">800-355-2227</span>
+              <p>Apprisen — nonprofit credit counseling with a free initial session; also a HUD-approved housing counseling agency serving Indiana by phone and online. <a href="https://www.apprisen.com" target="_blank" rel="noreferrer">apprisen.com</a></p>
+              <button type="button" data-copy="800-355-2227">Copy number</button>
+            </article>
+            <article class="resource">
+              <span class="type">Nonprofit referral network</span>
+              <span class="contact">877-360-6322</span>
+              <p>National Foundation for Credit Counseling — connects you with a nonprofit member agency serving Indiana for debt, budgeting, and housing counseling. <a href="https://www.nfcc.org" target="_blank" rel="noreferrer">nfcc.org</a></p>
+              <button type="button" data-copy="877-360-6322">Copy number</button>
+            </article>
+          </div>
+          <p class="local-note"><strong>Honest gaps:</strong> no GA meeting in Kokomo itself turned up, no private Kokomo practice advertising a gambling specialty was found, and no HUD-approved counseling agency is physically located in Kokomo. The options above are the nearest verified real ones.</p>
         </div>
       </div>
     </section>
